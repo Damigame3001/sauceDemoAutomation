@@ -1,0 +1,3636 @@
+{
+	"info": {
+		"_postman_id": "25270db6-0122-44a8-97ff-900ce43b7de4",
+		"name": "User",
+		"description": "# About this collection\n\nThis collection helps you set up contract tests to ensure that two separate systems are compatible and can communicate with one another.\n\n## **Using the collection**\n\n**Step 1:** Send the sample requests and view the response and test results.\n\n**Step 2:** Replace the sample request URLs with your desired API endpoints.\n\n**Step 3:** Customize the tests in the \"Tests\" tab if needed. Don't forget to save your changes.\n\n### Resources\n\n[Scripting in Postman](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/)\n\n[Test script examples](https://learning.postman.com/docs/writing-scripts/script-references/test-examples/)\n\n[Postman Sandbox API reference](https://learning.postman.com/docs/sending-requests/grpc/postman-sandbox-api/#writing-assertions)\n\n[Using the Collection Runner](https://learning.postman.com/docs/collections/running-collections/intro-to-collection-runs/)\n\n[<br>](https://postman.postman.co/documentation/24552533-5bead607-0197-4e1d-87d4-3160bc7631c1?entity=&branch=&version=)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42527837",
+		"_collection_link": "https://dummyjson-9166.postman.co/workspace/Swagger-Petstore(users)~dea0eb17-e176-4dcf-8b7c-748eb84e689b/collection/42527837-25270db6-0122-44a8-97ff-900ce43b7de4?action=share&source=collection_link&creator=42527837"
+	},
+	"item": [
+		{
+			"name": "POST/user/createWithList",
+			"item": [
+				{
+					"name": "TC_API_001 – Valid Data",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Dynamic user generator\r",
+									"pm.environment.set(\"userList\", JSON.stringify([\r",
+									"  {\r",
+									"    id: 101,\r",
+									"    username: \"testuser_\" + Date.now(),\r",
+									"    firstName: \"John\",\r",
+									"    lastName: \"Doe\",\r",
+									"    email: \"john.doe@example.com\",\r",
+									"    password: \"123456\",\r",
+									"    phone: \"1234567890\",\r",
+									"    userStatus: 1\r",
+									"  }\r",
+									"]));\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains code 200\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json.code).to.eql(200);\r",
+									"  pm.expect(json.message).to.eql(\"ok\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{userList}}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}",
+							"host": [
+								"{{baseUrl}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_002 – Empty Array",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Handles empty array with 200 OK\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[]\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}",
+							"host": [
+								"{{baseUrl}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_003 – Invalid JSON",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ id: 1, username: \"missing quotes\" }\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}",
+							"host": [
+								"{{baseUrl}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_004 – Missing Required Field",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ id: 1, username: \"missing quotes\" }\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}",
+							"host": [
+								"{{baseUrl}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_005 – Duplicate Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Duplicate entries are still accepted (not ideal)\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"id\": 301,\r\n    \"username\": \"duplicateUser\",\r\n    \"firstName\": \"Dup\",\r\n    \"lastName\": \"User\",\r\n    \"email\": \"dup@example.com\",\r\n    \"password\": \"pass\",\r\n    \"phone\": \"123\",\r\n    \"userStatus\": 1\r\n  },\r\n  {\r\n    \"id\": 301,\r\n    \"username\": \"duplicateUser\",\r\n    \"firstName\": \"Dup\",\r\n    \"lastName\": \"User\",\r\n    \"email\": \"dup@example.com\",\r\n    \"password\": \"pass\",\r\n    \"phone\": \"123\",\r\n    \"userStatus\": 1\r\n  }\r\n]\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}",
+							"host": [
+								"{{baseUrl}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_006 – Check Content-Type",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Content-Type is application/json\", () => {\r",
+									"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"id\": 1,\r\n    \"username\": \"testuser\",\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"email\": \"john@example.com\",\r\n    \"password\": \"password\",\r\n    \"phone\": \"1234567890\",\r\n    \"userStatus\": 1\r\n  }\r\n]\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}",
+							"host": [
+								"{{baseUrl}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_007 – Large Payload",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Handles large request without error\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let users = [];\r",
+									"for (let i = 0; i < 1000; i++) {\r",
+									"  users.push({\r",
+									"    id: 1000 + i,\r",
+									"    username: `bulkuser_${i}`,\r",
+									"    firstName: \"Bulk\",\r",
+									"    lastName: \"User\",\r",
+									"    email: `bulk${i}@example.com`,\r",
+									"    password: \"pass123\",\r",
+									"    phone: \"1234567890\",\r",
+									"    userStatus: 0\r",
+									"  });\r",
+									"}\r",
+									"pm.environment.set(\"largePayload\", JSON.stringify(users));\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{largePayload}}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}",
+							"host": [
+								"{{baseUrl}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_008 – Wrong Field Type",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Wrong field type still accepted (should not be)\", () => {\r",
+									"  pm.response.to.have.status(200); // API likely coerces it\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"id\": 401,\r\n    \"username\": 12345,\r\n    \"firstName\": \"InvalidType\",\r\n    \"lastName\": \"User\",\r\n    \"email\": \"invalid@example.com\",\r\n    \"password\": \"pass\",\r\n    \"phone\": \"1234567890\",\r\n    \"userStatus\": 1\r\n  }\r\n]\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}",
+							"host": [
+								"{{baseUrl}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GET/user/{username}",
+			"item": [
+				{
+					"name": "TC_API_GET_001 – Valid Existing Username",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"user1\");\r",
+									"pm.environment.set(\"expected_status\", 200);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(pm.environment.get(\"expected_status\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains user data\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json).to.have.property(\"username\", pm.environment.get(\"username\"));\r",
+									"  pm.expect(json).to.have.property(\"id\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_GET_002 – Non-existent Username",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"Dami2001\");\r",
+									"pm.environment.set(\"expected_status\", 404);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", () => {\r",
+									"  pm.response.to.have.status(pm.environment.get(\"expected_status\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response message is User not found\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json.message).to.eql(\"User not found\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_GET_003 – Invalid Username (symbols)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"@invalid!\");\r",
+									"pm.environment.set(\"expected_status\", 400);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"  pm.response.to.have.status(pm.environment.get(\"expected_status\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response message is Invalid username supplied\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json.message).to.eql(\"Invalid username supplied\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_GET_004 – Empty Username",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"@invalid!\");\r",
+									"pm.environment.set(\"expected_status\", 400);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"  pm.response.to.have.status(pm.environment.get(\"expected_status\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response message is Invalid username supplied\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json.message).to.eql(\"Invalid username supplied\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_GET_005 – Validate Response Headers & Content-Type",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"user1\");\r",
+									"pm.environment.set(\"expected_status\", 200);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(pm.environment.get(\"expected_status\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type is application/json\", () => {\r",
+									"  pm.response.to.have.header(\"Content-Type\", /application\\/json/);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_GET_006 – Username with URL Encoded Characters",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", encodeURIComponent(\"user 1\"));  // Encodes space as %20\r",
+									"pm.environment.set(\"expected_status\", 404);  // Assuming user with space does not exist\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 or 400\", () => {\r",
+									"  pm.expect(pm.response.code === 404 || pm.response.code === 400).to.be.true;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_GET_007 – Username Max Length (Boundary)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const maxLengthUser = \"u\".repeat(255);\r",
+									"pm.environment.set(\"username\", maxLengthUser);\r",
+									"pm.environment.set(\"expected_status\", 404); // Adjust if user exists\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 or 200\", () => {\r",
+									"  pm.expect(pm.response.code === 404 || pm.response.code === 200).to.be.true;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_GET_008 – Username Min Length (1 character)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"a\");\r",
+									"pm.environment.set(\"expected_status\", 404); // Adjust if user exists\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 or 200\", () => {\r",
+									"  pm.expect(pm.response.code === 404 || pm.response.code === 200).to.be.true;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_GET_009 – SQL Injection Attempt",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"' OR '1'='1\");\r",
+									"pm.environment.set(\"expected_status\", 400);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400 or 404\", () => {\r",
+									"  pm.expect(pm.response.code === 400 || pm.response.code === 404).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response does not leak data\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json.message).to.not.be.empty;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_GET_010 – Performance (Response Time)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"user1\");\r",
+									"pm.environment.set(\"expected_status\", 200);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(pm.environment.get(\"expected_status\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 2000ms\", () => {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PUT/user/{username}",
+			"item": [
+				{
+					"name": "TC_API_PUT_001 – Valid Update",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"Dami\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body includes code 200\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"username\": \"Dami\",\r\n  \"firstName\": \"Dami\",\r\n  \"lastName\": \"Oyelade\",\r\n  \"email\": \"dami.oyelade@example.com\",\r\n  \"password\": \"securePass123\",\r\n  \"phone\": \"08012345678\",\r\n  \"userStatus\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_PUT_002 – Non-existent User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"ghostUser\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", () => {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"username\": \"ghostUser\",\r\n  \"firstName\": \"Dami\",\r\n  \"lastName\": \"Oyelade\",\r\n  \"email\": \"dami.oyelade@example.com\",\r\n  \"password\": \"securePass123\",\r\n  \"phone\": \"08012345678\",\r\n  \"userStatus\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_PUT_003 – Missing Required Fields",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"Dami\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Expect failure with missing fields\", () => {\r",
+									"  pm.expect(pm.response.code).to.be.oneOf([400, 500]);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"Dami\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_PUT_004 – Invalid Email Format",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"Dami\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Validate email format rejection\", () => {\r",
+									"  pm.expect(pm.response.code).to.be.oneOf([200, 400]); // Depends on API validation\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"username\": \"Dami\",\r\n  \"firstName\": \"Dami\",\r\n  \"lastName\": \"Oyelade\",\r\n  \"email\": \"invalid-email\",\r\n  \"password\": \"securePass123\",\r\n  \"phone\": \"08012345678\",\r\n  \"userStatus\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_PUT_005 – Large Input Strings",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"Dami\");\r",
+									"\r",
+									"pm.environment.set(\"longFirstName\", \"A\".repeat(1000));\r",
+									"pm.environment.set(\"longLastName\", \"B\".repeat(1000));\r",
+									"pm.environment.set(\"longPassword\", \"P\".repeat(1000));\r",
+									"pm.environment.set(\"longPhone\", \"0\".repeat(100));\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Handles large input gracefully\", () => {\r",
+									"  pm.expect(pm.response.code).to.be.oneOf([200, 400]);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"{{longFirstName}}\",\r\n  \"lastName\": \"{{longLastName}}\",\r\n  \"email\": \"dami@example.com\",\r\n  \"password\": \"{{longPassword}}\",\r\n  \"phone\": \"{{longPhone}}\",\r\n  \"userStatus\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_PUT_006 – Special Characters in Username",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"@dami$\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Handles special characters in username\", () => {\r",
+									"  pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"Dami\",\r\n  \"lastName\": \"Oyelade\",\r\n  \"email\": \"dami.special@example.com\",\r\n  \"password\": \"special123\",\r\n  \"phone\": \"08123456789\",\r\n  \"userStatus\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_PUT_007 – Null Values",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"Dami\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Handles null values\", () => {\r",
+									"  pm.expect(pm.response.code).to.be.oneOf([200, 400]);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": null,\r\n  \"username\": \"Dami\",\r\n  \"firstName\": null,\r\n  \"lastName\": null,\r\n  \"email\": null,\r\n  \"password\": null,\r\n  \"phone\": null,\r\n  \"userStatus\": null\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_PUT_008 – Numeric-only Username",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"12345\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Numeric usernames handled properly\", () => {\r",
+									"  pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"Dami\",\r\n  \"lastName\": \"Oyelade\",\r\n  \"email\": \"dami.numeric@example.com\",\r\n  \"password\": \"numericPass123\",\r\n  \"phone\": \"08012345678\",\r\n  \"userStatus\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_PUT_009 – Case Sensitivity",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"dami\"); // lowercase vs \"Dami\"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Case sensitivity check\", () => {\r",
+									"  pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"Dami\",\r\n  \"lastName\": \"Oyelade\",\r\n  \"email\": \"dami.numeric@example.com\",\r\n  \"password\": \"numericPass123\",\r\n  \"phone\": \"08012345678\",\r\n  \"userStatus\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DELETE/user/{username}",
+			"item": [
+				{
+					"name": "TC_API_DELETE_001 – Delete Existing User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"Dami\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response message matches deleted username\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json.message).to.eql(pm.environment.get(\"username\"));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_DELETE_002 – Non-existent User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"ghostUser123\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", () => {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains 'User not found'\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json.message).to.eql(\"User not found\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_DELETE_003 – Empty Username",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"  pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains 'Invalid username supplied'\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json.message).to.include(\"Invalid\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_DELETE_004 – Special Characters in Username",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"@dami$\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is valid (200, 400 or 404)\", () => {\r",
+									"  pm.expect(pm.response.code).to.be.oneOf([200, 400, 404]);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_DELETE_005 – Numeric Username",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"12345\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is valid (200 or 404)\", () => {\r",
+									"  pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlUser}}",
+							"host": [
+								"{{baseUrlUser}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GET/user/login",
+			"item": [
+				{
+					"name": "TC_API_LOGIN_001 – Valid Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"David\");\r",
+									"pm.environment.set(\"password\", \"David12345\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains session info\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json.message).to.include(\"logged in user session:\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Rate limit and expiration headers exist\", () => {\r",
+									"  pm.expect(pm.response.headers.get(\"x-rate-limit\")).to.not.be.null;\r",
+									"  pm.expect(pm.response.headers.get(\"x-expires-after\")).to.not.be.null;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlLogin}}?username={{username}}&password={{password}}",
+							"host": [
+								"{{baseUrlLogin}}"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "{{username}}"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_LOGIN_002 – Invalid Password",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"David\");\r",
+									"pm.environment.set(\"password\", \"wrongpass\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"  pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Invalid login response\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json.message).to.include(\"Invalid\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlLogin}}?username={{username}}&password={{password}}",
+							"host": [
+								"{{baseUrlLogin}}"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "{{username}}"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_LOGIN_003 – Invalid Username",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"nonexistentUser\");\r",
+									"pm.environment.set(\"password\", \"David12345\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"  pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Invalid username response\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json.message).to.include(\"Invalid\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlLogin}}?username={{username}}&password={{password}}",
+							"host": [
+								"{{baseUrlLogin}}"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "{{username}}"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_LOGIN_004 – Empty Username",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"\");\r",
+									"pm.environment.set(\"password\", \"anyPass\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"  pm.response.to.have.status(400);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlLogin}}?username={{username}}&password={{password}}",
+							"host": [
+								"{{baseUrlLogin}}"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "{{username}}"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_LOGIN_005 – Empty Password",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"David\");\r",
+									"pm.environment.set(\"password\", \"\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"  pm.response.to.have.status(400);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlLogin}}?username={{username}}&password={{password}}",
+							"host": [
+								"{{baseUrlLogin}}"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "{{username}}"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_LOGIN_006 – SQL Injection Attempt",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"admin' OR 1=1 --\");\r",
+									"pm.environment.set(\"password\", \"hack\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", () => {\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains 'User not found'\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json.message).to.eql(\"User not found\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlLogin}}?username={{username}}&password={{password}}",
+							"host": [
+								"{{baseUrlLogin}}"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "{{username}}"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GET/user/logout",
+			"item": [
+				{
+					"name": "TC_API_LOGOUT_001 – Logout of logged-in user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Optional: Log request timestamp or fake login session ID\r",
+									"pm.environment.set(\"requestTimestamp\", new Date().toISOString());\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is JSON\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains 'ok'\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message.toLowerCase()).to.eql(\"ok\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response includes 'code' and 'type'\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"code\");\r",
+									"    pm.expect(jsonData).to.have.property(\"type\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlLogout}}",
+							"host": [
+								"{{baseUrlLogout}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_LOGOUT_002 – Logout without prior login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is JSON\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains 'ok'\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message.toLowerCase()).to.eql(\"ok\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response includes 'code' and 'type'\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"code\");\r",
+									"    pm.expect(jsonData).to.have.property(\"type\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlLogout}}",
+							"host": [
+								"{{baseUrlLogout}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "POST/user/createWithArray",
+			"item": [
+				{
+					"name": "TC_API_POST_001 – Create users with valid user array",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Set up environment variable with user array JSON\r",
+									"pm.environment.set(\"userArray\", JSON.stringify([\r",
+									"  {\r",
+									"    id: 101,\r",
+									"    username: \"user101\",\r",
+									"    firstName: \"John\",\r",
+									"    lastName: \"Doe\",\r",
+									"    email: \"john.doe@example.com\",\r",
+									"    password: \"pass123\",\r",
+									"    phone: \"1234567890\",\r",
+									"    userStatus: 1\r",
+									"  }\r",
+									"]));\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body has code 200 and message 'ok'\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json.code).to.eql(200);\r",
+									"  pm.expect(json.message).to.eql(\"ok\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{userArray}}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlCreateWithArray}}",
+							"host": [
+								"{{baseUrlCreateWithArray}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_POST_002 – Create users with empty array",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"userArray\", JSON.stringify([]));\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response message is 'ok'\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json.message).to.eql(\"ok\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{userArray}}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlCreateWithArray}}",
+							"host": [
+								"{{baseUrlCreateWithArray}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_POST_003 – Create users with missing required fields (empty username and email)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"userArray\", JSON.stringify([\r",
+									"  {\r",
+									"    id: 102,\r",
+									"    username: \"\",\r",
+									"    firstName: \"Alice\",\r",
+									"    lastName: \"Smith\",\r",
+									"    email: \"\",\r",
+									"    password: \"pass123\",\r",
+									"    phone: \"1234567890\",\r",
+									"    userStatus: 1\r",
+									"  }\r",
+									"]));\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400 or 422 for validation error\", () => {\r",
+									"  pm.expect(pm.response.code).to.be.oneOf([400, 422]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains error message\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json.message).to.exist;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{userArray}}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlCreateWithArray}}",
+							"host": [
+								"{{baseUrlCreateWithArray}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_POST_004 – Create users with invalid email format",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"userArray\", JSON.stringify([\r",
+									"  {\r",
+									"    id: 103,\r",
+									"    username: \"user103\",\r",
+									"    firstName: \"Bob\",\r",
+									"    lastName: \"Brown\",\r",
+									"    email: \"bob-at-example.com\",\r",
+									"    password: \"pass123\",\r",
+									"    phone: \"1234567890\",\r",
+									"    userStatus: 1\r",
+									"  }\r",
+									"]));\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400 or 422 for invalid email\", () => {\r",
+									"  pm.expect(pm.response.code).to.be.oneOf([400, 422]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains validation error message\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json.message).to.exist;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{userArray}}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlCreateWithArray}}",
+							"host": [
+								"{{baseUrlCreateWithArray}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_POST_005 – Create users with very large input values",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"userArray\", JSON.stringify([\r",
+									"  {\r",
+									"    id: 103,\r",
+									"    username: \"user103\",\r",
+									"    firstName: \"Bob\",\r",
+									"    lastName: \"Brown\",\r",
+									"    email: \"bob-at-example.com\",\r",
+									"    password: \"pass123\",\r",
+									"    phone: \"1234567890\",\r",
+									"    userStatus: 1\r",
+									"  }\r",
+									"]));\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400 or 422 for invalid email\", () => {\r",
+									"  pm.expect(pm.response.code).to.be.oneOf([400, 422]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains validation error message\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json.message).to.exist;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{userArray}}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlCreateWithArray}}",
+							"host": [
+								"{{baseUrlCreateWithArray}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_POST_006 – Create users with special characters in username",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"userArray\", JSON.stringify([\r",
+									"  {\r",
+									"    id: 105,\r",
+									"    username: \"user!@#\",\r",
+									"    firstName: \"Special\",\r",
+									"    lastName: \"Char\",\r",
+									"    email: \"special@example.com\",\r",
+									"    password: \"pass123\",\r",
+									"    phone: \"1234567890\",\r",
+									"    userStatus: 1\r",
+									"  }\r",
+									"]));\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or validation error\", () => {\r",
+									"  pm.expect(pm.response.code).to.be.oneOf([200, 400, 422]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response message exists\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json.message).to.exist;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{userArray}}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlCreateWithArray}}",
+							"host": [
+								"{{baseUrlCreateWithArray}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "POST/user",
+			"item": [
+				{
+					"name": "TC_API_POST_001 – Create user with valid details",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"dami_user\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has code 200 and message\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json).to.have.property(\"code\", 200);\r",
+									"  pm.expect(json).to.have.property(\"message\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"Dami\",\r\n  \"lastName\": \"Oyelade\",\r\n  \"email\": \"dami@example.com\",\r\n  \"password\": \"pass1234\",\r\n  \"phone\": \"08012345678\",\r\n  \"userStatus\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlCreateUser}}",
+							"host": [
+								"{{baseUrlCreateUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_POST_002 – Create user with missing optional fields",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"dami_minimal\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"User created successfully\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json).to.have.property(\"code\", 200);\r",
+									"  pm.expect(json).to.have.property(\"message\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"{{username}}\",\r\n  \"password\": \"minimalPass123\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlCreateUser}}",
+							"host": [
+								"{{baseUrlCreateUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_POST_003 – Create user with empty body",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"dami_minimal\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"User created successfully\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json).to.have.property(\"code\", 200);\r",
+									"  pm.expect(json).to.have.property(\"message\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"{{username}}\",\r\n  \"password\": \"minimalPass123\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlCreateUser}}",
+							"host": [
+								"{{baseUrlCreateUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_POST_004 – Create user with invalid email format",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"dami_invalid_email\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400 or 422\", () => {\r",
+									"  pm.expect(pm.response.code).to.be.oneOf([400, 422]);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 2,\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"Dami\",\r\n  \"lastName\": \"Oyelade\",\r\n  \"email\": \"invalid-email\",\r\n  \"password\": \"pass1234\",\r\n  \"phone\": \"08012345678\",\r\n  \"userStatus\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlCreateUser}}",
+							"host": [
+								"{{baseUrlCreateUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_POST_005 – Create user with duplicate username",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"dami_user\");  // Existing username\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 409\", () => {\r",
+									"  pm.expect(pm.response.code).to.be.oneOf([200, 409]);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 3,\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"Dami\",\r\n  \"lastName\": \"Oyelade\",\r\n  \"email\": \"dami.duplicate@example.com\",\r\n  \"password\": \"pass1234\",\r\n  \"phone\": \"08012345678\",\r\n  \"userStatus\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlCreateUser}}",
+							"host": [
+								"{{baseUrlCreateUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_POST_006 – Create user with special characters in username",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"@dami#123\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or validation error\", () => {\r",
+									"  pm.expect(pm.response.code).to.be.oneOf([200, 400, 422]);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 4,\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"Dami\",\r\n  \"lastName\": \"Oyelade\",\r\n  \"email\": \"dami.special@example.com\",\r\n  \"password\": \"specialPass123\",\r\n  \"phone\": \"08012345678\",\r\n  \"userStatus\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlCreateUser}}",
+							"host": [
+								"{{baseUrlCreateUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_POST_007 – Create user with numeric username",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"12345\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 5,\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"Dami\",\r\n  \"lastName\": \"Oyelade\",\r\n  \"email\": \"dami.numeric@example.com\",\r\n  \"password\": \"numericPass123\",\r\n  \"phone\": \"08012345678\",\r\n  \"userStatus\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlCreateUser}}",
+							"host": [
+								"{{baseUrlCreateUser}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_API_POST_008 – Create user with large input data",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"username\", \"large_input_user\");\r",
+									"\r",
+									"pm.environment.set(\"longFirstName\", \"A\".repeat(1000));\r",
+									"pm.environment.set(\"longLastName\", \"B\".repeat(1000));\r",
+									"pm.environment.set(\"longPassword\", \"P\".repeat(1000));\r",
+									"pm.environment.set(\"longPhone\", \"0\".repeat(100));\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 413\", () => {\r",
+									"  pm.expect(pm.response.code).to.be.oneOf([200, 413]);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "{{content_type}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "{{accept_header}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 5,\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"{{longFirstName}}\",\r\n  \"lastName\": \"{{longLastName}}\",\r\n  \"email\": \"dami.numeric@example.com\",\r\n  \"password\": \"{{longPassword}}\",\r\n  \"phone\": \"{{longPhone}}\",\r\n  \"userStatus\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlCreateUser}}",
+							"host": [
+								"{{baseUrlCreateUser}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://petstore.swagger.io/v2/user/createWithList"
+		},
+		{
+			"key": "content_type",
+			"value": "application/json\t",
+			"type": "string"
+		},
+		{
+			"key": "accept_header",
+			"value": "application/json\t",
+			"type": "string"
+		},
+		{
+			"key": "baseUrlUser",
+			"value": "https://petstore.swagger.io/v2/user/{{username}}",
+			"type": "string"
+		},
+		{
+			"key": "baseUrlLogin",
+			"value": "https://petstore.swagger.io/v2/user/login",
+			"type": "string"
+		},
+		{
+			"key": "baseUrlLogout",
+			"value": "https://petstore.swagger.io/v2/user/logout",
+			"type": "string"
+		},
+		{
+			"key": "baseUrlCreateWithArray",
+			"value": "https://petstore.swagger.io/v2/user/createWithArray",
+			"type": "string"
+		},
+		{
+			"key": "baseUrlCreateUser",
+			"value": "https://petstore.swagger.io/v2/user",
+			"type": "string"
+		}
+	]
+}
