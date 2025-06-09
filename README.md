@@ -207,18 +207,10 @@ npx cypress run
 
 ---
 
-## 📎 Attachments
+## 🔗 Documentation References
 
-* `manual-tests/test-cases.xlsx` – Manual test cases with coverage
-* `manual-tests/defects-report.xlsx` – All documented bugs and defects
-* `postman/users-collection.json` – API test collection for Users endpoint
-
----
-
-## 🔗 Optional References
-
-* 📊 [View Test Cases in Google Sheets](https://docs.google.com/spreadsheets/d/YOUR_TEST_CASE_LINK)
-* 🐛 [View Defect Report in Google Sheets](https://docs.google.com/spreadsheets/d/YOUR_DEFECT_REPORT_LINK)
+* 📊 [View Test Cases in Google Sheets](https://docs.google.com/spreadsheets/d/1pw0j34KkYLDa-Ic5hA34gtTB0FkW-6XBbMomBMT453s/edit?gid=419170681#gid=419170681)
+* 🐛 [View Defect Report in Google Sheets](https://docs.google.com/spreadsheets/d/1y5zfYjV22GZ8pdOQSM85kEjz0NeaOZDvxQFOhwrRQPM/edit?gid=1149601011#gid=1149601011)
 
 ---
 
